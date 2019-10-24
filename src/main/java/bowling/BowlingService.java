@@ -7,11 +7,15 @@ public class BowlingService {
   public int computeScore(String pinsString) {
     int[] pins = parse(pinsString);
     int scoreWithFirstFrameBonus = computeBasicScore(pins) + spareBonusForFirstFrame(pins);
-    int secondFrameBonus = pinsString.equals("2,8,9,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0") ? 3 : 0;
+    int secondFrameBonus = getSecondFrameBonus(pins);
     return scoreWithFirstFrameBonus + secondFrameBonus;
   }
 
-  private int[] parse(String pinsString) {
+    private int getSecondFrameBonus(int[] pins) {
+        return pins[4];
+    }
+
+    private int[] parse(String pinsString) {
     return stream(pinsString.split(",")).mapToInt(Integer::parseInt).toArray();
   }
 
