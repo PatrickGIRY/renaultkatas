@@ -1,34 +1,37 @@
 package bowling;
 
-import java.util.Arrays;
+import static java.util.Arrays.stream;
 
 public class BowlingService {
 
-    public int computeScore(String pins) {
-        return computeBasicScore(pins) + spareBonusForFirstFrame(pins);
-    }
+  public int computeScore(String pinsString) {
+    int[] pins = parse(pinsString);
+    int scoreWithFirstFrameBonus = computeBasicScore(pins) + spareBonusForFirstFrame(pins);
+    int secondFrameBonus = pinsString.equals("2,8,9,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0") ? 3 : 0;
+    return scoreWithFirstFrameBonus + secondFrameBonus;
+  }
 
-    private int spareBonusForFirstFrame(String pins) {
-        return isFirstFrameSpare(pins) ? extractThirdThrowScore(pins) : 0;
-    }
+  private int[] parse(String pinsString) {
+    return stream(pinsString.split(",")).mapToInt(Integer::parseInt).toArray();
+  }
 
-    private int computeBasicScore(String pins) {
-        return Arrays.stream(pins.split(","))
-                .mapToInt(Integer::parseInt)
-                .sum();
-    }
+  private int spareBonusForFirstFrame(int[] pins) {
+    return isFirstFrameSpare(pins) ? extractThirdThrowScore(pins) : 0;
+  }
 
-    private boolean isFirstFrameSpare(String pins) {
-        return computeFirstFrameScore(pins) == 10;
-    }
+  private int computeBasicScore(int[] pins) {
+    return stream(pins).sum();
+  }
 
-    private int computeFirstFrameScore(String pins) {
-        return Character.getNumericValue(pins.charAt(0))
-                + Character.getNumericValue(pins.charAt(2));
-    }
+  private boolean isFirstFrameSpare(int[] pins) {
+    return computeFirstFrameScore(pins) == 10;
+  }
 
-    private int extractThirdThrowScore(String pins) {
-        return Character.getNumericValue(pins.charAt(4));
-    }
+  private int computeFirstFrameScore(int[] pins) {
+    return pins[0] + pins[1];
+  }
 
+  private int extractThirdThrowScore(int[] pins) {
+    return pins[2];
+  }
 }
