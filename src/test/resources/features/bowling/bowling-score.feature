@@ -34,15 +34,26 @@ Feature: Bowling score
       | 1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0 | 2              |
       | 1,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0 | 4              |
       | 1,0,0,0,1,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0 | 5              |
+      | 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 | 20              |
 
-  Scenario Template: Compute score when the first frame is a spare
+  Scenario Template: Compute score when there are spares
     Given the frames are "<pins>"
     When I compute the score
     Then The score is <expected score>
     Examples:
-      | pins                                    | expected score |
-      | 1,9,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 | 12             |
-      | 1,9,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 | 14             |
-      | 2,8,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 | 15             |
-      | 2,8,9,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 | 35             |
-      | 2,8,9,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 | 37             |
+      | pins                                      | expected score |
+      | 1,9,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0   | 12             |
+      | 1,9,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0   | 14             |
+      | 2,8,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0   | 15             |
+      | 2,8,9,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0   | 35             |
+      | 2,8,9,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0   | 37             |
+      | 1,2,3,4,5,0,0,0,0,0,0,0,0,0,0,0,0,0,9,1,8 | 41             |
+      | 1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1 | 111             |
+
+  Scenario Template: Compute score when there are strikes
+    Given the frames are "<pins>"
+    When I compute the score
+    Then The score is <expected score>
+    Examples:
+      | pins                                      | expected score |
+      | 10,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0   | 14             |
