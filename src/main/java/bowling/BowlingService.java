@@ -10,12 +10,13 @@ public class BowlingService {
   }
 
   private int computeStrikeBonus(int[] pins) {
+    int bonus = 0;
     for (int i = 0; i < pins.length - 2; i++) {
       if (isStrike(pins[i])) {
-        return computeStrikeBonus(pins, i);
+        bonus += computeStrikeBonus(pins, i);
       }
     }
-    return 0;
+    return bonus;
   }
 
   private int computeStrikeBonus(int[] pins, int i) {
