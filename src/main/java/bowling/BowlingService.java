@@ -5,11 +5,20 @@ import static java.util.Arrays.stream;
 public class BowlingService {
 
   public int computeScore(String pinsString) {
-      if (pinsString.equals("10,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"))
-          return 14;
+
     int[] pins = parse(pinsString);
+    if (pins[0]==10) {
+      return  computeBasicScore(pins) +  strickBonusScore(pins);
+    }
     return computeBasicScore(pins) + computeSpareBonus(pins);
   }
+
+
+  private int strickBonusScore(int[] pins)
+  {
+    return pins[1] + pins[2];
+  }
+
 
   private int computeSpareBonus(int[] pins) {
     int bonus = 0;
