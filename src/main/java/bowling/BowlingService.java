@@ -11,37 +11,46 @@ public class BowlingService {
 
   private int computeStrikeBonus(int[] pins) {
     int bonus = 0;
-    for (int i = 0; i < pins.length - 2; i++) {
-      if (isStrike(pins[i])) {
-        bonus += computeStrikeBonus(pins, i);
+    int pinIndex = 0;
+    int frameIndex = 0;
+    while (frameIndex < 10) {
+      if (pins[pinIndex] == 10) {
+        bonus += pins[pinIndex + 1] + pins[pinIndex + 2];
+        frameIndex++;
+        pinIndex++;
+      } else if (pins[pinIndex] + pins[pinIndex + 1] == 10) {
+        pinIndex += frameIndex < 9 ? 2 : 3;
+        frameIndex++;
+      } else {
+        frameIndex++;
+        pinIndex += 2;
       }
     }
     return bonus;
   }
 
-  private int computeStrikeBonus(int[] pins, int i) {
-    return pins[i + 1] + pins[i + 2];
-  }
-
-  private boolean isStrike(int pin) {
-    return pin == 10;
-  }
 
   private int computeSpareBonus(int[] pins) {
     int bonus = 0;
-    for (int i = 2; i < pins.length; i += 2) {
-      bonus += computePreviousFrameSpareBonus(pins, i);
+    int pinIndex = 0;
+    int frameIndex = 0;
+    while (frameIndex < 10) {
+      if (pins[pinIndex] == 10) {
+        frameIndex++;
+        pinIndex++;
+      } else if (pins[pinIndex] + pins[pinIndex + 1] == 10) {
+        bonus += pins[pinIndex + 2];
+        pinIndex += frameIndex < 9 ? 2 : 3;
+        frameIndex++;
+      } else {
+        frameIndex++;
+        pinIndex += 2;
+      }
     }
+
     return bonus;
   }
 
-  private int computePreviousFrameSpareBonus(int[] pins, int i) {
-    return isPreviousFrameSpare(pins, i) ? pins[i] : 0;
-  }
-
-  private boolean isPreviousFrameSpare(int[] pins, int i) {
-    return pins[i - 2] + pins[i - 1] == 10;
-  }
 
   private int[] parse(String pinsString) {
     return stream(pinsString.split(",")).mapToInt(Integer::parseInt).toArray();
